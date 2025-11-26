@@ -7,24 +7,24 @@ end tb_counter_4bits;
 
 architecture Behavioral of tb_counter_4bits is
 
-    -- 申明要测试的组件
+    -- Declare the component to be tested
     component counter_4bits is
         Port ( CLOCK     : in  STD_LOGIC;
                DIRECTION : in  STD_LOGIC;
                COUNT_OUT : out STD_LOGIC_VECTOR (3 downto 0));
     end component;
 
-    -- 创建连接到组件的信号
+    -- Create signals to connect to the component's ports
     signal tb_clock     : STD_LOGIC := '0';
-    signal tb_direction : STD_LOGIC := '1'; -- 初始方向设置为递增
+    signal tb_direction : STD_LOGIC := '1'; -- Initial direction set to increment
     signal tb_count_out : STD_LOGIC_VECTOR (3 downto 0);
 
-    -- 时钟周期定义
-    constant clock_period : time := 10 ns; -- 对应 100 MHz 时钟
+    -- Clock period definition
+    constant clock_period : time := 10 ns; -- Corresponds to 100 MHz clock
 
 begin
 
-    -- 实例化待测试单元 (Unit Under Test, UUT)
+    -- Instantiate Unit Under Test (UUT)
     uut: counter_4bits
         Port map (
             CLOCK     => tb_clock,
@@ -32,7 +32,7 @@ begin
             COUNT_OUT => tb_count_out
         );
 
-    -- 时钟生成进程
+    -- Clock generation process
     clock_process : process
     begin
         tb_clock <= '0';
@@ -41,25 +41,25 @@ begin
         wait for clock_period / 2;
     end process;
 
-    -- 激励生成进程
+    -- Stimulus generation process
     stimulus_process: process
     begin
-        -- 初始状态，DIRECTION = '1' (递增)
-        report "开始测试: 方向 = 1 (递增)";
-        wait for 20 * clock_period; -- 等待20个时钟周期
+        -- Initial state, DIRECTION = '1' (increment)
+        report "Starting test: DIRECTION = 1 (increment)";
+        wait for 20 * clock_period; -- Wait for 20 clock cycles
 
-        -- 切换方向为递减
+        -- Switch direction to decrement
         tb_direction <= '0';
-        report "切换方向: 方向 = 0 (递减)";
-        wait for 20 * clock_period; -- 再等待20个时钟周期
+        report "Switching direction: DIRECTION = 0 (decrement)";
+        wait for 20 * clock_period; -- Wait for another 20 clock cycles
 
-        -- 再次切换方向为递增
+        -- Switch direction back to increment
         tb_direction <= '1';
-        report "再次切换方向: 方向 = 1 (递增)";
-        wait for 10 * clock_period; -- 再等待10个时钟周期
+        report "Switching direction back: DIRECTION = 1 (increment)";
+        wait for 10 * clock_period; -- Wait for another 10 clock cycles
 
-        report "测试结束";
-        wait; -- 停止仿真
+        report "Test finished";
+        wait; -- Stop simulation
     end process;
 
 end Behavioral;
